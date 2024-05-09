@@ -1,22 +1,14 @@
 import re
 import diccionarios
 
+encabezado = "\nNOMBRE_STAGES|CUMPLE_ESTANDAR False/True\n"
+salida = 'C:/Users/waltergutierrez/OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Proyecto_BDB.csv'
 
-def ejecutar_stages():
-    diccionario_G = diccionarios.get_g()
+diccionario_G = diccionarios.get_g()
 
-    encabezado = "\nNOMBRE_STAGES|CUMPLE_ESTANDAR False/True\n"
-    ruta_archivo = 'C:/Users/waltergutierrez/OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Proyecto_BDB.dsx'
-    #salida = 'C:/Users/waltergutierrez/OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/PruebaStagesSalida.csv'
-    salida = 'C:/Users/waltergutierrez/OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Proyecto_BDB.csv'
-
-    nombre_links = []
-    estandar_links = []
-    contenido_archivo = []
-
-    with open(ruta_archivo, 'r') as archivo:
-        for linea in archivo:
-            contenido_archivo.append(linea.strip())
+def ejecutar_stages(archivo):
+    nombre_stages = []
+    estandar_stages = []
 
     def verificar_patron(cadena, patron):
         busqueda = re.search(patron, cadena)
@@ -30,21 +22,21 @@ def ejecutar_stages():
             if palabra in linea:
                 if i + 1 < len(arreglo):
                     siguiente_linea = arreglo[i]
-                    nombre_links.append(siguiente_linea[11:-1])
+                    nombre_stages.append(siguiente_linea[11:-1])
 
-    busqueda_links = "StageNames"
-    buscar_links(busqueda_links, contenido_archivo)
+    busqueda_stages = "StageNames"
+    buscar_links(busqueda_stages, archivo)
 
     caracteres_reemplazar = [' ','|', ',','"']
 
-    for palabra in range(len(nombre_links)):
+    for palabra in range(len(nombre_stages)):
         for caracter in caracteres_reemplazar:
-            nombre_links[palabra] = nombre_links[palabra].replace(caracter, ' ')
+            nombre_stages[palabra] = nombre_stages[palabra].replace(caracter, ' ')
 
-    for elemento in nombre_links:
+    for elemento in nombre_stages:
         links = elemento.split()
         for nombre in links:
-            estandar_links.append(nombre.strip())
+            estandar_stages.append(nombre.strip())
 
     def validar_nombre(cadena, diccionario_G):
         for G in diccionario_G.keys():
@@ -57,14 +49,10 @@ def ejecutar_stages():
     resultados = []
     with open(salida, "a") as archivo_salida:
         archivo_salida.write(encabezado)
-        for nombre in estandar_links:
+        for nombre in estandar_stages:
             cumple_estandar = validar_nombre(nombre, diccionario_G)
             archivo_salida.write(f"{nombre}|{cumple_estandar}\n")
             resultados.append((nombre, cumple_estandar))
     return resultados
 
-# Llamar a la función para obtener el resultado y almacenarlo en un arreglo
-resultado_procesamiento = ejecutar_stages()
-print(resultado_procesamiento)
 print('El reporte stages se generó satisfactoriamente')
-#print(resultado_procesamiento)

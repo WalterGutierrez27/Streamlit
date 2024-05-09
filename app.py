@@ -1,7 +1,9 @@
 import streamlit as st
 import nombre_jobs
+import nombre_links
+import nombre_stages
 
-contenido_archivo = []
+#ruta_archivo = 'C:/Users/waltergutierrez/OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Proyecto_BDB.dsx'
 
 def procesar_archivo(archivo):
     # Intentar leer el contenido del archivo con diferentes codificaciones
@@ -17,18 +19,16 @@ def procesar_archivo(archivo):
         except UnicodeDecodeError:
             pass
 
-st.title('Procesamiento de Archivos .txt')
+st.title('Procesamiento de Archivos .dsx')
 
-archivo = st.file_uploader("Adjuntar archivo .txt", type=["txt"])
+ruta_archivo = st.file_uploader("Adjuntar archivo .txt", type=["dsx"])
 
-if archivo is not None:
-    try:
-        # Ejecutar la función para procesar el archivo
-        archivo_procesado = procesar_archivo(archivo)
-        nombre_jobs.lectura_archivo(contenido_archivo)
-        #nombre_jobs.ejecutar_nombre_jobs(contenido_archivo)
-        st.write(contenido_archivo)
-        st.write('El reporte nombre jobs se generó satisfactoriamente')
-    except Exception as e:
-        st.error(f"Error al procesar el archivo: {e}")
+contenido_archivo = []
 
+with open(ruta_archivo, 'r') as archivo:
+    for linea in archivo:
+         contenido_archivo.append(linea.strip())
+
+nombre_jobs.ejecutar_nombre_jobs(contenido_archivo)
+nombre_stages.ejecutar_stages(contenido_archivo)
+nombre_links.ejecutar_nombre_links(contenido_archivo)

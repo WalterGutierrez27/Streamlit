@@ -3,18 +3,10 @@ import diccionarios
 from itertools import product
 
 encabezado = "NOMBRE_JOBS|CUMPLE_ESTANDAR False/True\n"
-#ruta_archivo = 'C:/Users/waltergutierrez/OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Proyecto_BDB.dsx'
 salida = 'C:/Users/waltergutierrez/OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Proyecto_BDB.csv'
 
 diccionario_P = diccionarios.get_p()
 diccionario_T = diccionarios.get_t()
-
-contenido_archivo = []
-
-def lectura_archivo(insumo):
-    with open(insumo, 'r') as archivo:
-        for linea in archivo:
-            contenido_archivo.append(linea.strip())
 
 def ejecutar_nombre_jobs(archivo):
     nombre_jobs = []
@@ -51,7 +43,6 @@ def ejecutar_nombre_jobs(archivo):
             cumple_estandar = validar_nombre(nombre, diccionario_T, diccionario_P)
             archivo_salida.write(f"{nombre}|{cumple_estandar}\n")
             resultados.append((nombre, cumple_estandar))
-            print('El reporte nombre jobs se generó satisfactoriamente')
     return resultados
 
-ejecutar_nombre_jobs(contenido_archivo)
+print('El reporte nombre jobs se generó satisfactoriamente')

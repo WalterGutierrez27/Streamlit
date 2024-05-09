@@ -2,16 +2,9 @@ import re
 import diccionarios
 
 encabezado = "\nNOMBRE_LINKS|CUMPLE_ESTANDAR False/True\n"
-ruta_archivo = 'C:/Users/waltergutierrez/OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Proyecto_BDB.dsx'
 salida = 'C:/Users/waltergutierrez/OneDrive - SETI S.A.S/SETI/OKRS 2024/Desarrollo Insignias Python/Python/Entrada/Proyecto_BDB.csv'
 
 diccionario_L = diccionarios.get_l()
-
-contenido_archivo = []
-
-with open(ruta_archivo, 'r') as archivo:
-    for linea in archivo:
-        contenido_archivo.append(linea.strip())
 
 def ejecutar_nombre_links(archivo):
     nombre_links = []
@@ -32,7 +25,7 @@ def ejecutar_nombre_links(archivo):
                     nombre_links.append(siguiente_linea[11:-1])
 
     busqueda_links = "LinkNames"
-    buscar_links(busqueda_links, contenido_archivo)
+    buscar_links(busqueda_links, archivo)
 
     caracteres_reemplazar = [' ', '|', ',']
 
@@ -54,7 +47,7 @@ def ejecutar_nombre_links(archivo):
         return False
 
     resultados = []
-    with open(salida, "w") as archivo_salida:
+    with open(salida, "a") as archivo_salida:
         archivo_salida.write(encabezado)
         for nombre in estandar_links:
             cumple_estandar = validar_nombre(nombre, diccionario_L)
@@ -62,7 +55,4 @@ def ejecutar_nombre_links(archivo):
             resultados.append((nombre, cumple_estandar))
     return resultados
 
-# Llamar a la función para obtener el resultado y almacenarlo en un arreglo
-resultado_procesamiento = ejecutar_nombre_links(contenido_archivo)
 print('El reporte links se generó satisfactoriamente')
-#print(resultado_procesamiento)
